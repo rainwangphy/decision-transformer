@@ -198,7 +198,7 @@ class Trainer:
 
     def get_returns(self, ret):
         self.model.train(False)
-        args = Args(self.config.game.lower(), self.config.seed)
+        args = Args(self.config.game, self.config.seed)
         env = Env(args)
         env.eval()
 
@@ -283,10 +283,17 @@ class Env:
         self.device = args.device
         # self.ale = atari_py.ALEInterface()
         self.ale = ale_py.ALEInterface()
-        self.ale.setInt("random_seed", args.seed)
-        self.ale.setInt("max_num_frames_per_episode", args.max_episode_length)
+        # ale = ale_py.ALEInterface()
+        # ale.setInt("random_seed", 10)
+        # ale.setInt("max_num_frames_per_episode", 200)
+        # ale.setFloat("repeat_action_probability", 0)  # Disable sticky actions
+        # ale.setInt("frame_skip", 0)
+        # ale.setBool("color_averaging", False)
+
+        self.ale.setInt("random_seed", int(args.seed))
+        self.ale.setInt("max_num_frames_per_episode", int(args.max_episode_length))
         self.ale.setFloat("repeat_action_probability", 0)  # Disable sticky actions
-        self.ale.setInt("frame_skip", 0)
+        self.ale.setInt("frame_skip", int(0))
         self.ale.setBool("color_averaging", False)
         # assert args.game == "Breakout"
         self.ale.loadROM(
